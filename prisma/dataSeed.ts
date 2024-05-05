@@ -33,4 +33,9 @@ export const permissions: Permission[] = [
         name: "vue_log",
         description: "Vue des log",
     },
+    {
+        id: "clvt0xur0000008la57eb8edw",
+        name: "gestion_state_material",
+        description: "Gestion des états de matériel",
+    },
 ]
