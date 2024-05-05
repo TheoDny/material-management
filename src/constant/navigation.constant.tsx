@@ -18,7 +18,11 @@ export const NAVIGATION_ITEMS: NavigationItemType[] = [
         ],
     },
     {
-        title: "Paramètres",
-        subMenuItems: [{ title: "Mon Compte", path: "/settings/account" }],
+        title: "Paramétrage",
+        subMenuItems: [
+            { title: "Mon Compte", path: "/settings/account" },
+            { title: "État Matériel", path: "/settings/state-material" }
+        ]
+        ,
     },
 ]

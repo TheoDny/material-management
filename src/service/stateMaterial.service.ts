@@ -2,20 +2,33 @@ import { prisma } from "@/lib/prisma"
 import { addLog } from "@/service/log.service"
 import {
     selectStateMaterialMedium,
-    selectStateMaterialSmall,
+    selectStateMaterialSmall, StateMaterialFormatted,
     StateMaterialMedium,
     StateMaterialSmall,
 } from "@/type/stateMaterial.type"
 
-export const getAllStateMaterialMedium = async (): Promise<StateMaterialMedium[]> => {
-    return prisma.stateMaterial.findMany({
-        select: selectStateMaterialMedium,
-    })
+export const getAllStateMaterialFormated = async (): Promise<StateMaterialFormatted[]> => {
+    const query: string = `
+        SELECT
+            id,
+            name,
+            description,
+            to_char("createdAt", 'DD/MM/YYYY HH24:MI:SS') as "createdAt"
+        FROM
+            "StateMaterial"
+        WHERE "deletedAt" IS NOT NULL
+        ORDER BY
+            "name" ASC
+    `
+    return prisma.$queryRawUnsafe(query)
 }
 
 export const getAllStateMaterialSmall = async (): Promise<StateMaterialSmall[]> => {
     return prisma.stateMaterial.findMany({
         select: selectStateMaterialSmall,
+        orderBy: {
+            name: "asc",
+        }
     })
 }
 export const addStateMaterial = async (name: string, description: string): Promise<StateMaterialMedium> => {
