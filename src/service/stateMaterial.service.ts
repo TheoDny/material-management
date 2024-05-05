@@ -2,10 +2,12 @@ import { prisma } from "@/lib/prisma"
 import { addLog } from "@/service/log.service"
 import {
     selectStateMaterialMedium,
-    selectStateMaterialSmall, StateMaterialFormatted,
+    selectStateMaterialSmall,
+    StateMaterialFormatted,
     StateMaterialMedium,
     StateMaterialSmall,
 } from "@/type/stateMaterial.type"
+import dayjs from "dayjs"
 
 export const getAllStateMaterialFormated = async (): Promise<StateMaterialFormatted[]> => {
     const query: string = `
@@ -13,10 +15,10 @@ export const getAllStateMaterialFormated = async (): Promise<StateMaterialFormat
             id,
             name,
             description,
-            to_char("createdAt", 'DD/MM/YYYY HH24:MI:SS') as "createdAt"
+            to_char("createdAt", 'DD/MM/YYYY') as "createdAt"
         FROM
             "StateMaterial"
-        WHERE "deletedAt" IS NOT NULL
+        WHERE "deletedAt" IS NULL
         ORDER BY
             "name" ASC
     `
@@ -28,10 +30,10 @@ export const getAllStateMaterialSmall = async (): Promise<StateMaterialSmall[]> 
         select: selectStateMaterialSmall,
         orderBy: {
             name: "asc",
-        }
+        },
     })
 }
-export const addStateMaterial = async (name: string, description: string): Promise<StateMaterialMedium> => {
+export const addStateMaterial = async (name: string, description: string): Promise<StateMaterialFormatted> => {
     const newStateMaterial = await prisma.stateMaterial.create({
         data: {
             name: name,
@@ -42,14 +44,14 @@ export const addStateMaterial = async (name: string, description: string): Promi
 
     addLog("STATE_MATERIAL_ADD", `Ajout de l'état de matériel ${newStateMaterial.name} (${newStateMaterial.id})`)
 
-    return newStateMaterial
+    return convertToFormatted(newStateMaterial)
 }
 
 export const editStateMaterial = async (
     stateMaterialId: string,
     name: string,
     description: string,
-): Promise<StateMaterialMedium> => {
+): Promise<StateMaterialFormatted> => {
     const prevStateMaterial = await deleteStateMaterial(stateMaterialId, false)
 
     if (!prevStateMaterial) {
@@ -79,12 +81,18 @@ export const editStateMaterial = async (
         throw new Error(`Failed to create new state material (${name})`)
     }
 
-    addLog("STATE_MATERIAL_EDIT", `Edition de l'état de matériel ${newStateMaterial.name} (${newStateMaterial.id} <= ${prevStateMaterial.id})`)
+    addLog(
+        "STATE_MATERIAL_EDIT",
+        `Edition de l'état de matériel ${newStateMaterial.name} (${newStateMaterial.id} <= ${prevStateMaterial.id})`,
+    )
 
-    return newStateMaterial
+    return convertToFormatted(newStateMaterial)
 }
 
-export const deleteStateMaterial = async (stateMaterialId: string,log: boolean = true): Promise<StateMaterialSmall> => {
+export const deleteStateMaterial = async (
+    stateMaterialId: string,
+    log: boolean = true,
+): Promise<StateMaterialSmall> => {
     const deletedStateMaterial = await prisma.stateMaterial.update({
         where: {
             id: stateMaterialId,
@@ -95,7 +103,20 @@ export const deleteStateMaterial = async (stateMaterialId: string,log: boolean =
         select: selectStateMaterialSmall,
     })
 
-    log && addLog("STATE_MATERIAL_DELETE", `Suppression de l'état de matériel ${deletedStateMaterial.name} (${stateMaterialId})`)
+    log &&
+        addLog(
+            "STATE_MATERIAL_DELETE",
+            `Suppression de l'état de matériel ${deletedStateMaterial.name} (${stateMaterialId})`,
+        )
 
     return deletedStateMaterial
+}
+
+const convertToFormatted = (stateMaterial: StateMaterialMedium): StateMaterialFormatted => {
+    return {
+        id: stateMaterial.id,
+        name: stateMaterial.name,
+        description: stateMaterial.description,
+        createdAt: dayjs(stateMaterial.createdAt).format("DD/MM/YYYY"),
+    }
 }

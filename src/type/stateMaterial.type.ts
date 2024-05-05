@@ -43,12 +43,11 @@ export const includeStateMaterialMedium = {
 
 export type includeStateMaterialMedium = typeof includeStateMaterialMedium
 
-
 // ==== StateMaterialFormatted ====
 
 export type StateMaterialFormatted = {
-    id: string,
-    name: string,
-    description: string,
-    createdAt: string,
+    id: string
+    name: string
+    description: string
+    createdAt: string
 }
