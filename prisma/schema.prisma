@@ -59,13 +59,54 @@ enum LogAction {
     // ===== MAIL action log =====
     MAIL_SEND
     MAIL_ERROR
+    // ===== MATERIAL action log =====
+    MATERIAL_ADD
+    MATERIAL_EDIT
+    MATERIAL_DELETE
+    // ===== STATE_MATERIAL action log =====
+    STATE_MATERIAL_ADD
+    STATE_MATERIAL_EDIT
+    STATE_MATERIAL_DELETE
 }
 
 model Log {
-    id          String    @id @default(cuid())
-    action      LogAction
-    description String
-    userId      String
-    createdAt   DateTime  @default(now())
-    User        User      @relation(fields: [userId], references: [id])
+    id              String         @id @default(cuid())
+    action          LogAction
+    description     String
+    userId          String
+    createdAt       DateTime       @default(now())
+    User            User           @relation(fields: [userId], references: [id])
+    MaterialSaved   MaterialSaved? @relation(fields: [materialSavedId], references: [id])
+    materialSavedId String?
+}
+
+model Material {
+    id                    String          @id @default(cuid())
+    createdAt             DateTime        @default(now())
+    updatedAt             DateTime        @default(now()) @updatedAt
+    actualMaterialSavedId String?         @unique
+    ActualMaterialSaved   MaterialSaved?  @relation("actual_material_saved", fields: [actualMaterialSavedId], references: [id])
+    MaterialSaved         MaterialSaved[] @relation("material_saved")
+}
+
+model MaterialSaved {
+    id                  String          @id @default(cuid())
+    name                String
+    description         String
+    createdAt           DateTime
+    StateMaterials      StateMaterial[]
+    characteritics      Json            @default("[]")
+    Logs                Log[]
+    materialId          String
+    Material            Material        @relation("material_saved", fields: [materialId], references: [id])
+    ActualMaterialSaved Material?       @relation("actual_material_saved")
+}
+
+model StateMaterial {
+    id            String          @id @default(cuid())
+    name          String
+    description   String
+    createdAt     DateTime        @default(now())
+    deletedAt     DateTime?
+    MaterialSaved MaterialSaved[]
 }
