@@ -70,43 +70,32 @@ enum LogAction {
 }
 
 model Log {
-    id              String         @id @default(cuid())
-    action          LogAction
-    description     String
-    userId          String
-    createdAt       DateTime       @default(now())
-    User            User           @relation(fields: [userId], references: [id])
-    MaterialSaved   MaterialSaved? @relation(fields: [materialSavedId], references: [id])
-    materialSavedId String?
+    id          String    @id @default(cuid())
+    action      LogAction
+    description String
+    userId      String
+    createdAt   DateTime  @default(now())
+    User        User      @relation(fields: [userId], references: [id])
+    Material    Material? @relation(fields: [materialId], references: [id])
+    materialId  String?
 }
 
 model Material {
-    id                    String          @id @default(cuid())
-    createdAt             DateTime        @default(now())
-    updatedAt             DateTime        @default(now()) @updatedAt
-    actualMaterialSavedId String?         @unique
-    ActualMaterialSaved   MaterialSaved?  @relation("actual_material_saved", fields: [actualMaterialSavedId], references: [id])
-    MaterialSaved         MaterialSaved[] @relation("material_saved")
-}
-
-model MaterialSaved {
-    id                  String          @id @default(cuid())
-    name                String
-    description         String
-    createdAt           DateTime
-    StateMaterials      StateMaterial[]
-    characteritics      Json            @default("[]")
-    Logs                Log[]
-    materialId          String
-    Material            Material        @relation("material_saved", fields: [materialId], references: [id])
-    ActualMaterialSaved Material?       @relation("actual_material_saved")
+    id              String          @id @default(cuid())
+    createdAt       DateTime        @default(now())
+    deletedAt       DateTime?
+    name            String
+    description     String
+    StateMaterial   StateMaterial[]
+    characteristics Json            @default("[]")
+    Logs            Log[]
 }
 
 model StateMaterial {
-    id            String          @id @default(cuid())
-    name          String
-    description   String
-    createdAt     DateTime        @default(now())
-    deletedAt     DateTime?
-    MaterialSaved MaterialSaved[]
+    id          String     @id @default(cuid())
+    name        String
+    description String
+    createdAt   DateTime   @default(now())
+    deletedAt   DateTime?
+    Material    Material[]
 }

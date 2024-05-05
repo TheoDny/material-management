@@ -1,10 +1,5 @@
 import { Prisma } from "@prisma/client"
-import { StateMaterialSmall } from "@/type/stateMaterial.type"
-import {
-    Characteristics,
-    includeMaterialSavedIncludeStateMaterial,
-    includeMaterialSavedSmall,
-} from "@/type/materialSaved.type"
+import { includeStateMaterialSmall, StateMaterialSmall } from "@/type/stateMaterial.type"
 
 // ==== MaterialSmall ====
 export type MaterialSmall = Prisma.MaterialGetPayload<{
@@ -13,7 +8,8 @@ export type MaterialSmall = Prisma.MaterialGetPayload<{
 
 export const selectMaterialSmall = {
     id: true,
-    actualMaterialSaved: includeMaterialSavedSmall.MaterialSaved,
+    name: true,
+    description: true,
 }
 
 export type selectMaterialSmallType = typeof selectMaterialSmall
@@ -33,9 +29,11 @@ export type MaterialIncludeStateMaterial = Prisma.MaterialGetPayload<{
 
 export const selectMaterialIncludeStateMaterial = {
     id: true,
+    name: true,
+    description: true,
     createdAt: true,
-    updatedAt: true,
-    actualMaterialSaved: includeMaterialSavedIncludeStateMaterial.MaterialSaved,
+    characteristics: true,
+    ...includeStateMaterialSmall
 }
 
 export type selectMaterialIncludeStateMaterialType = typeof selectMaterialIncludeStateMaterial
@@ -53,11 +51,13 @@ export type includeMaterialIncludeStateMaterial = typeof includeMaterialIncludeS
 
 export type MaterialFormatted = {
     id: string,
-    actualMaterialSavedId: string,
     name: string,
     description: string,
-    createdAt: string,
     updatedAt: string,
     characteristics: Characteristics,
-    StateMaterials: StateMaterialSmall[]
+    StateMaterial: StateMaterialSmall[]
 }
+
+// ==== JSON Type ====
+
+export type Characteristics = [string,string][]

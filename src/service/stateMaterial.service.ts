@@ -42,6 +42,10 @@ export const addStateMaterial = async (name: string, description: string): Promi
         select: selectStateMaterialMedium,
     })
 
+    if (!newStateMaterial) {
+        throw new Error(`Failed to create new state material (${name})`)
+    }
+
     addLog("STATE_MATERIAL_ADD", `Ajout de l'état de matériel ${newStateMaterial.name} (${newStateMaterial.id})`)
 
     return convertToFormatted(newStateMaterial)
@@ -78,7 +82,7 @@ export const editStateMaterial = async (
                 id: true,
             },
         })
-        throw new Error(`Failed to create new state material (${name})`)
+        throw new Error(`Failed to create the updated state material (${name} - ${stateMaterialId})`)
     }
 
     addLog(
