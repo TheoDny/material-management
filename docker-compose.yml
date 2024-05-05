@@ -1,9 +1,9 @@
 version: "3.8"
 
 services:
-    db:
+    db-material-management:
         image: postgres:16
-        restart: always
+        restart: on-failure
         # set shared memory limit when using docker-compose
         shm_size: 128mb
         # or set shared memory limit when deploy via swarm stack
@@ -19,17 +19,17 @@ services:
         ports:
             - "5432:5432"
         volumes:
-            - D:/Documents/volumes/postgres-next-shadcn/db-data:/var/lib/postgresql/data
+            - D:/Documents/volumes/postgres-material-management/db-data:/var/lib/postgresql/data
 
-    adminer:
-        image: adminer
-        ports:
-            - 8080:8080
-
-    cloudbeaver:
-        image: dbeaver/cloudbeaver:24
-        container_name: cloudbeaver
-        ports:
-            - "8088:8978"
-        volumes:
-            - D:/Documents/volumes/postgres-next-shadcn/workspace:/workspace
+#    adminer:
+#        image: adminer
+#        ports:
+#            - 8080:8080
+#
+#    cloudbeaver:
+#        image: dbeaver/cloudbeaver:24
+#        container_name: cloudbeaver
+#        ports:
+#            - "8088:8978"
+#        volumes:
+#            - D:/Documents/volumes/postgres-next-shadcn/workspace:/workspace
