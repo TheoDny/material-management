@@ -5,9 +5,10 @@ import {
     MaterialSmall,
     MaterialIncludeStateMaterial,
     selectMaterialIncludeStateMaterial,
-    Characteristics
+    Characteristics,
 } from "@/type/material.type"
 import { undefined } from "zod"
+import { filterEmptyTuple } from "@/util/diverse.util"
 
 export const getAllMaterialWidthStateMaterial = async (): Promise<MaterialIncludeStateMaterial[]> => {
     return prisma.material.findMany({
@@ -32,26 +33,27 @@ export const getAllMaterialSmall = async (): Promise<MaterialSmall[]> => {
         },
     })
 }
+
 export const addMaterial = async (
-        name: string,
-        description: string,
-        characteristics: Characteristics,
-        stateMaterialIds: string[],
-    ): Promise<MaterialIncludeStateMaterial> => {
+    name: string,
+    description: string,
+    characteristics: Characteristics,
+    stateMaterialIds: string[],
+): Promise<MaterialIncludeStateMaterial> => {
     const newMaterial = await prisma.material.create({
         data: {
             name: name,
             description: description,
-            characteristics: characteristics,
+            characteristics: filterEmptyTuple(characteristics),
             StateMaterial: {
                 connect: stateMaterialIds.map((stateMaterialId) => {
                     return {
                         id: stateMaterialId,
                     }
-                })
-            }
+                }),
+            },
         },
-        select: selectMaterialIncludeStateMaterial
+        select: selectMaterialIncludeStateMaterial,
     })
 
     if (!newMaterial) {
@@ -80,14 +82,14 @@ export const editMaterial = async (
         data: {
             name: name,
             description: description,
-            characteristics: characteristics,
+            characteristics: filterEmptyTuple(characteristics),
             StateMaterial: {
                 connect: stateMaterialIds.map((stateMaterialId) => {
                     return {
                         id: stateMaterialId,
                     }
-                })
-            }
+                }),
+            },
         },
         select: selectMaterialIncludeStateMaterial,
     })
@@ -130,10 +132,10 @@ export const deleteMaterial = async (
     })
 
     log &&
-        addLog(
-            "MATERIAL_DELETE",
-            `Suppression de l'état de matériel (${deletedMaterial.name} - ${materialId})`,
-        )
+    addLog(
+        "MATERIAL_DELETE",
+        `Suppression de l'état de matériel (${deletedMaterial.name} - ${materialId})`,
+    )
 
     return deletedMaterial
 }

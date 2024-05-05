@@ -1,6 +1,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/component/ui/dialog"
-import { MaterialIncludeStateMaterial } from "@/type/material.type"
+import { Characteristics, MaterialIncludeStateMaterial } from "@/type/material.type"
 import AddEditMaterialForm from "@/component/dataTable/material/form/AddEditMaterialForm"
+import { StateMaterialSmall } from "@/type/stateMaterial.type"
 
 type props = {
     show: boolean
@@ -8,6 +9,8 @@ type props = {
         id: string
         name: string
         description: string
+        StateMaterial: StateMaterialSmall[]
+        characteristics: Characteristics
     }
     afterSubmit: (value: MaterialIncludeStateMaterial, action: "edit" | "delete" | "add") => any
     closeDialog: () => void

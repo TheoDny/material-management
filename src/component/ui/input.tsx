@@ -4,16 +4,19 @@ import { cn } from "@/lib/utils"
 import { cva, type VariantProps } from "class-variance-authority"
 import { IoIosEye, IoIosEyeOff } from "react-icons/io"
 
-export interface InputProps
+interface BaseProps
     extends React.InputHTMLAttributes<HTMLInputElement>,
-        VariantProps<typeof InputVariants> {}
+        VariantProps<typeof InputVariants> {
+}
 
 type AddProps = {
     setVisibility?: (visibility: boolean) => void
     visibility?: boolean
 }
 
-const InputVariants = cva(
+export type InputProps = BaseProps & AddProps
+
+export const InputVariants = cva(
     "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
     {
         variants: {
@@ -27,7 +30,7 @@ const InputVariants = cva(
     },
 )
 
-const Input = React.forwardRef<HTMLInputElement, InputProps & AddProps>(
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
     ({ className, type, sizeElement, setVisibility, visibility, ...props }, ref) => {
         return (
             <>

@@ -13,6 +13,18 @@ export const config = {
             },
         },
         extend: {
+            height: {
+                "4.5": "18px",
+            },
+            width: {
+                "4.5": "18px",
+            },
+            maxWidth: {
+                "4.5": "18px",
+            },
+            maxHeight: {
+                "4.5": "18px",
+            },
             colors: {
                 border: "hsl(var(--border))",
                 input: "hsl(var(--input))",

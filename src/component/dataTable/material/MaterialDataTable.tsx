@@ -16,7 +16,7 @@ export const MaterialDataTable = ({ materialData }: Props) => {
     const [materials, setMaterials] = useState<MaterialFormatted[]>(formatMaterialArray(materialData))
     const [showDialogAddEditMaterial, setShowDialogAddEditMaterial] = useState(false)
     const [selectedMaterial, setSelectedMaterial] = useState<
-        | (MaterialFormatted & {
+        | (MaterialIncludeStateMaterial & {
         index: number
     })
         | undefined
@@ -73,6 +73,7 @@ export const MaterialDataTable = ({ materialData }: Props) => {
             <DialogAddEditMaterial
                 show={showDialogAddEditMaterial}
                 afterSubmit={afterSubmit}
+                //@ts-ignore
                 defaultValues={selectedMaterial}
                 closeDialog={closeDialogAddEdit}
             />
@@ -81,6 +82,7 @@ export const MaterialDataTable = ({ materialData }: Props) => {
                 data={materials}
                 enableColumnVisibility={true}
                 onDoubleClick={(index) => {
+                    //@ts-ignore
                     setSelectedMaterial({
                         index: index,
                         ...materials[index],
@@ -104,7 +106,7 @@ const formatMaterialArray = (materialData: MaterialIncludeStateMaterial[]): Mate
             description: material.description,
             updatedAt: dayjs(material.createdAt).format("DD/MM/YYYY HH:mm:ss"),
             characteristics: material.characteristics as Characteristics,
-            StateMaterial: material.StateMaterial
+            StateMaterial: material.StateMaterial,
         }
     })
 }

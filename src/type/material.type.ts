@@ -25,6 +25,7 @@ export type includeMaterialSmall = typeof includeMaterialSmall
 // ==== MaterialIncludeStateMaterial ====
 export type MaterialIncludeStateMaterial = Prisma.MaterialGetPayload<{
     select: selectMaterialIncludeStateMaterialType
+    characteristics: Characteristics;
 }>
 
 export const selectMaterialIncludeStateMaterial = {
@@ -33,7 +34,7 @@ export const selectMaterialIncludeStateMaterial = {
     description: true,
     createdAt: true,
     characteristics: true,
-    ...includeStateMaterialSmall
+    ...includeStateMaterialSmall,
 }
 
 export type selectMaterialIncludeStateMaterialType = typeof selectMaterialIncludeStateMaterial
@@ -60,4 +61,4 @@ export type MaterialFormatted = {
 
 // ==== JSON Type ====
 
-export type Characteristics = [string,string][]
+export type Characteristics = [string, string][]

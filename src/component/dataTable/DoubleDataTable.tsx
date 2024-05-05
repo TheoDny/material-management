@@ -39,24 +39,24 @@ export default function DoubleDataTable<
     R extends { id: string },
     FR extends { id: string },
 >({
-    dataLeft,
-    formatLeft,
-    columnsLeft,
-    configLeft,
-    classNameLeft,
-    toolbarLeft,
-    enableColumnVisibilityLeft,
-    keyLeftToRight,
-    dataRight,
-    formatRight,
-    columnsRight,
-    configRight,
-    classNameRight,
-    onDoubleClickLeft,
-    onChangeSelectedRight,
-    toolbarRight,
-    enableColumnVisibilityRight,
-}: props<L, FL, R, FR>) {
+      dataLeft,
+      formatLeft,
+      columnsLeft,
+      configLeft,
+      classNameLeft,
+      toolbarLeft,
+      enableColumnVisibilityLeft,
+      keyLeftToRight,
+      dataRight,
+      formatRight,
+      columnsRight,
+      configRight,
+      classNameRight,
+      onDoubleClickLeft,
+      onChangeSelectedRight,
+      toolbarRight,
+      enableColumnVisibilityRight,
+  }: props<L, FL, R, FR>) {
     const [leftSelected, setLeftSelected] = useState({})
     const [rightSelected, setRightSelected] = useState({})
 
@@ -99,10 +99,6 @@ export default function DoubleDataTable<
             isEdited.current = false
         }
     }, [rightSelected, leftSelected, onChangeSelectedRight])
-
-    useEffect(() => {
-        console.log(leftSelected)
-    }, [leftSelected])
 
     const formateDataLeft: FL[] = useMemo(() => formatLeft(dataLeft), [dataLeft, formatLeft])
     const formatedDataRight: FR[] = useMemo(() => formatRight(dataRight), [dataRight, formatRight])
