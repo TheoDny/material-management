@@ -8,6 +8,7 @@ export type MaterialSmall = Prisma.MaterialGetPayload<{
 
 export const selectMaterialSmall = {
     id: true,
+    identifier: true,
     name: true,
     description: true,
 }
@@ -30,6 +31,7 @@ export type MaterialIncludeStateMaterial = Prisma.MaterialGetPayload<{
 
 export const selectMaterialIncludeStateMaterial = {
     id: true,
+    identifier: true,
     name: true,
     description: true,
     createdAt: true,

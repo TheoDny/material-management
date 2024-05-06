@@ -80,6 +80,7 @@ export const editMaterial = async (
 
     const newMaterial = await prisma.material.create({
         data: {
+            identifier: prevMaterial.identifier,
             name: name,
             description: description,
             characteristics: filterEmptyTuple(characteristics),
@@ -111,7 +112,7 @@ export const editMaterial = async (
 
     addLog(
         "MATERIAL_EDIT",
-        `Edition de l'état de matériel ${newMaterial.name} (${newMaterial.id} <= ${prevMaterial.id})`,
+        `Edition de l'état de matériel ${newMaterial.name} (${newMaterial.id} - ${prevMaterial.identifier})`,
     )
 
     return newMaterial

@@ -82,6 +82,7 @@ model Log {
 
 model Material {
     id              String          @id @default(cuid())
+    identifier      String          @default(cuid())
     createdAt       DateTime        @default(now())
     deletedAt       DateTime?
     name            String
@@ -89,6 +90,8 @@ model Material {
     StateMaterial   StateMaterial[]
     characteristics Json            @default("[]")
     Logs            Log[]
+
+    @@unique([identifier, deletedAt], name: "Material_identifier")
 }
 
 model StateMaterial {
