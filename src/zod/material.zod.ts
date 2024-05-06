@@ -33,3 +33,7 @@ export const addFrontMaterialZod = z.object({
 export const deleteMaterialZod = z.object({
     materialId: z.string(),
 })
+
+export const getMaterialZod = z.object({
+    materialId: z.string(),
+})

@@ -53,7 +53,11 @@ function MultiSelect({ options, selected, onChange, className, ...props }: Multi
                     role="combobox"
                     aria-expanded={open}
                     className={`w-full justify-between h-full min-h-12`}
-                    onClick={() => setOpen(!open)}
+                    onClick={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        setOpen(!open)
+                    }}
                 >
                     <div className="flex gap-1 flex-wrap">
                         <TooltipProvider>

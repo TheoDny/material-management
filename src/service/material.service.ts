@@ -140,3 +140,20 @@ export const deleteMaterial = async (
 
     return deletedMaterial
 }
+
+export const getMaterial = async (
+    materialId: string,
+): Promise<MaterialIncludeStateMaterial> => {
+    const material = await prisma.material.findUnique({
+        where: {
+            id: materialId,
+        },
+        select: selectMaterialIncludeStateMaterial,
+    })
+    
+    if (!material) {
+        throw new Error(`Material not found (${materialId})`)
+    }
+
+    return material
+}
