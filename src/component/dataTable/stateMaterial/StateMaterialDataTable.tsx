@@ -132,4 +132,15 @@ const columnsStateMaterial: ColumnDef<StateMaterialFormatted>[] = [
         accessorKey: "description",
         header: "Description",
     },
+    {
+        accessorKey: "color",
+        header: "Couleur",
+        cell: ({ cell }) => (
+            <div className={"rounded h-4.5 w-4.5"}
+                 style={{
+                     backgroundColor: cell.row.original.color,
+                 }}
+            />
+        ),
+    },
 ]

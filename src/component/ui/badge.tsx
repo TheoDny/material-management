@@ -34,7 +34,9 @@ export interface BadgeProps
         VariantProps<typeof badgeVariants> {
 }
 
-function Badge({ className, variant, size, ...props }: BadgeProps) {
+function Badge({ className, variant, size, color, ...props }: BadgeProps) {
+    if (color) className = `${className} bg-[${color}]`
+    
     return (
         <div className={cn(badgeVariants({ variant, size, className }))} {...props} />
     )

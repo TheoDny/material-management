@@ -166,10 +166,11 @@ const AddEditMaterialForm = ({ defaultValues, afterSubmit, canDelete }: props) =
                             <FormLabel>États du matériel</FormLabel>
                             <FormControl>
                                 <MultiSelect
-                                    selected={(field.value ?? []).map((state: StateMaterialSmall) => ({
+                                    selected={(field.value ?? []).map((state) => ({
                                         label: state.name,
                                         key: state.id,
                                         tip: state.description,
+                                        color: state.color,
                                         value: state,
                                     }))}
                                     onChange={(value => {
@@ -186,6 +187,7 @@ const AddEditMaterialForm = ({ defaultValues, afterSubmit, canDelete }: props) =
                                         label: state.name,
                                         key: state.id,
                                         tip: state.description,
+                                        color: state.color,
                                         value: state,
                                     }))}
                                 />

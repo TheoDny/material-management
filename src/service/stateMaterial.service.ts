@@ -11,16 +11,14 @@ import dayjs from "dayjs"
 
 export const getAllStateMaterialFormated = async (): Promise<StateMaterialFormatted[]> => {
     const query: string = `
-        SELECT
-            id,
-            name,
-            description,
-            to_char("createdAt", 'DD/MM/YYYY') as "createdAt"
-        FROM
-            "StateMaterial"
+        SELECT id,
+               name,
+               description,
+               to_char("createdAt", 'DD/MM/YYYY') as "createdAt",
+               color
+        FROM "StateMaterial"
         WHERE "deletedAt" IS NULL
-        ORDER BY
-            "name" ASC
+        ORDER BY "name" ASC
     `
     return prisma.$queryRawUnsafe(query)
 }
@@ -28,16 +26,20 @@ export const getAllStateMaterialFormated = async (): Promise<StateMaterialFormat
 export const getAllStateMaterialSmall = async (): Promise<StateMaterialSmall[]> => {
     return prisma.stateMaterial.findMany({
         select: selectStateMaterialSmall,
+        where: {
+            deletedAt: null,
+        },
         orderBy: {
             name: "asc",
         },
     })
 }
-export const addStateMaterial = async (name: string, description: string): Promise<StateMaterialFormatted> => {
+export const addStateMaterial = async (name: string, description: string, color?: string): Promise<StateMaterialFormatted> => {
     const newStateMaterial = await prisma.stateMaterial.create({
         data: {
             name: name,
             description: description,
+            color: color,
         },
         select: selectStateMaterialMedium,
     })
@@ -55,6 +57,7 @@ export const editStateMaterial = async (
     stateMaterialId: string,
     name: string,
     description: string,
+    color?: string,
 ): Promise<StateMaterialFormatted> => {
     const prevStateMaterial = await deleteStateMaterial(stateMaterialId, false)
 
@@ -66,6 +69,7 @@ export const editStateMaterial = async (
         data: {
             name: name,
             description: description,
+            color: color,
         },
         select: selectStateMaterialMedium,
     })
@@ -108,10 +112,10 @@ export const deleteStateMaterial = async (
     })
 
     log &&
-        addLog(
-            "STATE_MATERIAL_DELETE",
-            `Suppression de l'état de matériel ${deletedStateMaterial.name} (${stateMaterialId})`,
-        )
+    addLog(
+        "STATE_MATERIAL_DELETE",
+        `Suppression de l'état de matériel ${deletedStateMaterial.name} (${stateMaterialId})`,
+    )
 
     return deletedStateMaterial
 }
@@ -121,6 +125,7 @@ const convertToFormatted = (stateMaterial: StateMaterialMedium): StateMaterialFo
         id: stateMaterial.id,
         name: stateMaterial.name,
         description: stateMaterial.description,
+        color: stateMaterial.color,
         createdAt: dayjs(stateMaterial.createdAt).format("DD/MM/YYYY"),
     }
 }

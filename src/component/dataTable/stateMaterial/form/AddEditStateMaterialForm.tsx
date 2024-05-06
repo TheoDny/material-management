@@ -17,12 +17,14 @@ import { handleErrorAction } from "@/util/error.util"
 import { Button } from "@/component/ui/button"
 import { useConfirm } from "@/provider/ConfirmationProvider"
 import { StateMaterialFormatted } from "@/type/stateMaterial.type"
+import { ColorPicker } from "@/component/ui/color-picker"
 
 type props = {
     defaultValues?: {
         id: string
         name: string
         description: string
+        color: string
     }
     afterSubmit?: (value: StateMaterialFormatted, action: "edit" | "delete" | "add") => any
     canDelete?: boolean
@@ -124,6 +126,19 @@ const AddEditStateMaterialForm = ({ defaultValues, afterSubmit, canDelete }: pro
                         Suppression
                     </Button>
                 )}
+                <FormField
+                    control={form.control}
+                    name="color"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Couleur</FormLabel>
+                            <FormControl>
+                                <ColorPicker color={field.value ?? "#D3D3D3"} setColor={field.onChange} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
             </form>
         </Form>
     )

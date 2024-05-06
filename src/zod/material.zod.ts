@@ -19,6 +19,7 @@ const frontStateMaterialZod = z.object({
         id: z.string(),
         name: z.string(),
         description: z.string(),
+        color: z.string(),
     },
 )
 

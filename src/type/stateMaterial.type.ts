@@ -9,6 +9,7 @@ export const selectStateMaterialSmall = {
     id: true,
     name: true,
     description: true,
+    color: true,
 }
 
 export type selectStateMaterialSmallType = typeof selectStateMaterialSmall
@@ -30,6 +31,7 @@ export const selectStateMaterialMedium = {
     id: true,
     name: true,
     description: true,
+    color: true,
     createdAt: true,
 }
 
@@ -49,5 +51,6 @@ export type StateMaterialFormatted = {
     id: string
     name: string
     description: string
+    color: string
     createdAt: string
 }

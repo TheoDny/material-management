@@ -95,6 +95,7 @@ model StateMaterial {
     id          String     @id @default(cuid())
     name        String
     description String
+    color       String     @default("#D3D3D3")
     createdAt   DateTime   @default(now())
     deletedAt   DateTime?
     Material    Material[]

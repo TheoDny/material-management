@@ -19,12 +19,14 @@ import {
 import { Badge } from "./badge"
 import { ScrollArea } from "@/component/ui/scroll-area"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/component/ui/tooltip"
+import { getContrastColor } from "@/util/diverse.util"
 
 
 export type OptionType = {
     label: string;
     value: any;
     tip?: string;
+    color?: string;
     key: string;
 }
 
@@ -50,7 +52,7 @@ function MultiSelect({ options, selected, onChange, className, ...props }: Multi
                     variant="outline"
                     role="combobox"
                     aria-expanded={open}
-                    className={`w-full justify-between h-full`}
+                    className={`w-full justify-between h-full min-h-12`}
                     onClick={() => setOpen(!open)}
                 >
                     <div className="flex gap-1 flex-wrap">
@@ -61,6 +63,10 @@ function MultiSelect({ options, selected, onChange, className, ...props }: Multi
                                         <Badge
                                             variant="secondary"
                                             key={item.key}
+                                            style={item.color ? {
+                                                backgroundColor: item.color,
+                                                color: getContrastColor(item.color),
+                                            } : {}}
                                         >
                                             {item.label}
                                             <div
@@ -100,7 +106,7 @@ function MultiSelect({ options, selected, onChange, className, ...props }: Multi
                             <ScrollArea className="max-h-[200px]">
                                 {options.map((option) => (
                                     <CommandItem
-                                        className={"border-b"}
+                                        className={"border-b cursor-pointer"}
                                         key={option.key}
                                         onSelect={() => {
                                             onChange(
@@ -119,6 +125,14 @@ function MultiSelect({ options, selected, onChange, className, ...props }: Multi
                                             )}
                                         />
                                         {option.label}
+                                        <div
+                                            className="rounded h-4.5 w-4.5 ml-auto mr-2"
+                                            style={option.color ? {
+                                                backgroundColor: option.color,
+                                            } : {}}
+                                        >
+
+                                        </div>
                                     </CommandItem>
                                 ))}
                             </ScrollArea>

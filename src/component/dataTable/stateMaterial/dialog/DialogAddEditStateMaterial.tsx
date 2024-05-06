@@ -8,6 +8,7 @@ type props = {
         id: string
         name: string
         description: string
+        color: string
     }
     afterSubmit: (value: StateMaterialFormatted, action: "edit" | "delete" | "add") => any
     closeDialog: () => void
