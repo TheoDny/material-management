@@ -82,7 +82,7 @@ export const StateMaterialDataTable = ({ stateMaterialData }: Props) => {
                 onDoubleClick={(index) => {
                     setSelectedStateMaterial({
                         index: index,
-                        ...stateMaterialData[index],
+                        ...stateMaterials[index],
                     })
                     setShowDialogAddEditStateMaterial(true)
                 }}
