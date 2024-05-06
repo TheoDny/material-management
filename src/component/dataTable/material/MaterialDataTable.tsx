@@ -8,6 +8,10 @@ import { Characteristics, MaterialFormatted, MaterialIncludeStateMaterial } from
 import { ColumnDef } from "@tanstack/react-table"
 import { DialogAddEditMaterial } from "@/component/dataTable/material/dialog/DialogAddEditMaterial"
 import dayjs from "dayjs"
+import { getAllMaterialWidthStateMaterialAction } from "@/action/material.action"
+import { handleErrorAction } from "@/util/error.util"
+import { toast } from "sonner"
+import { RefreshCw } from "lucide-react"
 
 type Props = {
     materialData: MaterialIncludeStateMaterial[]
@@ -21,10 +25,22 @@ export const MaterialDataTable = ({ materialData }: Props) => {
     })
         | undefined
     >(undefined)
+    const [animateRefresh, setAnimateRefresh] = useState(false)
 
     const closeDialogAddEdit = () => {
         setShowDialogAddEditMaterial(false)
         setSelectedMaterial(undefined)
+    }
+
+    const refreshMaterialList = async () => {
+        setAnimateRefresh(true)
+        setMaterials([])
+        setSelectedMaterial(undefined)
+        const response = await getAllMaterialWidthStateMaterialAction({})
+        if (handleErrorAction(response, toast) && response.data) {
+            setMaterials(formatMaterialArray(response.data))
+        }
+        setAnimateRefresh(false)
     }
 
     const afterSubmit = (material: MaterialIncludeStateMaterial, action: "edit" | "delete" | "add") => {
@@ -59,14 +75,25 @@ export const MaterialDataTable = ({ materialData }: Props) => {
     }
 
     const toolbar: ReactNode = (
-        <Button
-            size={"sm"}
-            onClick={() => {
-                setShowDialogAddEditMaterial(true)
-            }}
-        >
-            Ajouter un état de matériel
-        </Button>
+        <div className="flex flex-row flex-wrap justify-end gap-1">
+            <Button
+                size={"sm"}
+                onClick={() => {
+                    setShowDialogAddEditMaterial(true)
+                }}
+            >
+                Ajouter un état de matériel
+            </Button>
+            <Button
+                size={"sm"}
+                onClick={() => refreshMaterialList()}>
+                <RefreshCw
+                    size={25}
+                    // animate the icon to rotate 360 degrees
+                    className={animateRefresh ? "animate-spin" : ""}
+                />
+            </Button>
+        </div>
     )
     return (
         <div>

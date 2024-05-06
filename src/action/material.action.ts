@@ -1,5 +1,11 @@
 "use server"
-import { addMaterial, deleteMaterial, editMaterial, getMaterial } from "@/service/material.service"
+import {
+    addMaterial,
+    deleteMaterial,
+    editMaterial,
+    getAllMaterialWidthStateMaterial,
+    getMaterial,
+} from "@/service/material.service"
 import { action } from "@/lib/safe-actions"
 import { addMaterialZod, deleteMaterialZod, editMaterialZod, getMaterialZod } from "@/zod/material.zod"
 import { getServerSession } from "next-auth"
@@ -47,4 +53,12 @@ export const deleteMaterialAction = action(deleteMaterialZod, async ({ materialI
 export const getMaterialAction = action(getMaterialZod, async ({ materialId }) => {
 
     return await getMaterial(materialId)
+})
+
+export const getAllMaterialWidthStateMaterialAction = action({}, async () => {
+    const session = await getServerSession(authOptions)
+    if (!session?.user || !checkPermissions(session, ["gestion_state_material"])) {
+        throw new Error("Unauthorized")
+    }
+    return await getAllMaterialWidthStateMaterial()
 })
