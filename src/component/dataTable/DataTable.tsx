@@ -56,18 +56,18 @@ interface DataTableProps<TData, TValue> {
     refDiv?: any
 }
 
-export function DataTable<TData, TValue>({
-    columns,
-    data,
-    config,
-    className,
-    toolbar,
-    onDoubleClick,
-    enableColumnVisibility,
-    refDiv,
-}: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>(
+    {
+        columns,
+        data,
+        config,
+        className,
+        toolbar,
+        onDoubleClick,
+        enableColumnVisibility,
+        refDiv,
+    }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([])
-    const [rowSelection, setRowSelection] = useState({})
     const [globalFilter, setGlobalFilter] = useState("")
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
 
@@ -90,7 +90,7 @@ export function DataTable<TData, TValue>({
         getCoreRowModel: getCoreRowModel(),
         onSortingChange: setSorting,
         getSortedRowModel: getSortedRowModel(),
-        onRowSelectionChange: setRowSelection,
+        // onRowSelectionChange: setRowSelection,
         onGlobalFilterChange: setGlobalFilter,
         getFilteredRowModel: getFilteredRowModel(),
         globalFilterFn: filterWithAccents,
@@ -98,7 +98,7 @@ export function DataTable<TData, TValue>({
         ...config,
         state: {
             sorting,
-            rowSelection,
+            // rowSelection,
             globalFilter,
             columnVisibility,
             ...config?.state,

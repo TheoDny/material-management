@@ -121,6 +121,7 @@ export const MaterialDataTable = ({ materialData }: Props) => {
                 }}
                 toolbar={toolbar}
                 config={{
+                    enableRowSelection: false,
                     filterPlaceHolder: "Filtre des états de matériel...",
                 }}
             />
