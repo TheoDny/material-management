@@ -18,7 +18,7 @@ import {
 } from "./popover"
 import { Badge } from "./badge"
 import { ScrollArea } from "@/component/ui/scroll-area"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/component/ui/tooltip"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/component/ui/tooltip"
 import { getContrastColor } from "@/util/diverse.util"
 
 
@@ -60,43 +60,41 @@ function MultiSelect({ options, selected, onChange, className, ...props }: Multi
                     }}
                 >
                     <div className="flex gap-1 flex-wrap">
-                        <TooltipProvider>
-                            {selected.map((item) => (
-                                <Tooltip key={item.key}>
-                                    <TooltipTrigger>
-                                        <Badge
-                                            variant="secondary"
-                                            key={item.key}
-                                            style={item.color ? {
-                                                backgroundColor: item.color,
-                                                color: getContrastColor(item.color),
-                                            } : {}}
+                        {selected.map((item) => (
+                            <Tooltip key={item.key}>
+                                <TooltipTrigger>
+                                    <Badge
+                                        variant="secondary"
+                                        key={item.key}
+                                        style={item.color ? {
+                                            backgroundColor: item.color,
+                                            color: getContrastColor(item.color),
+                                        } : {}}
+                                    >
+                                        {item.label}
+                                        <div
+                                            className="ml-1 ring-offset-background rounded-full outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                                            onMouseDown={(e) => {
+                                                e.preventDefault()
+                                                e.stopPropagation()
+                                            }}
+                                            onClick={(e) => {
+                                                e.preventDefault()
+                                                e.stopPropagation()
+                                                handleUnselect(item)
+                                            }}
                                         >
-                                            {item.label}
-                                            <div
-                                                className="ml-1 ring-offset-background rounded-full outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                                                onMouseDown={(e) => {
-                                                    e.preventDefault()
-                                                    e.stopPropagation()
-                                                }}
-                                                onClick={(e) => {
-                                                    e.preventDefault()
-                                                    e.stopPropagation()
-                                                    handleUnselect(item)
-                                                }}
-                                            >
-                                                <X
-                                                    className="h-3 w-3 text-muted-foreground hover:text-foreground"
-                                                />
-                                            </div>
-                                        </Badge>
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                        {item.tip}
-                                    </TooltipContent>
-                                </Tooltip>
-                            ))}
-                        </TooltipProvider>
+                                            <X
+                                                className="h-3 w-3 text-muted-foreground hover:text-foreground"
+                                            />
+                                        </div>
+                                    </Badge>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    {item.tip}
+                                </TooltipContent>
+                            </Tooltip>
+                        ))}
                     </div>
                     <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50" />
                 </Button>

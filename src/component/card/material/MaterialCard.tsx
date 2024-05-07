@@ -6,10 +6,8 @@ import { getMaterialAction } from "@/action/material.action"
 import { Characteristics, MaterialIncludeStateMaterial } from "@/type/material.type"
 import { SkeletonMaterialCard } from "@/component/card/material/SkeletonMaterialCard"
 import { BasicCard } from "@/component/card/basicCard"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/component/ui/tooltip"
-import { Badge } from "@/component/ui/badge"
-import { getContrastColor } from "@/util/diverse.util"
 import * as React from "react"
+import { StateMaterialBadge } from "@/component/badge/StateMaterialBadge"
 
 type Props = {
     id: string
@@ -52,27 +50,9 @@ export function MaterialCard({ id }: Props) {
                         </div>
                     </div>
                     <div className="flex gap-1 flex-wrap">
-                        <TooltipProvider>
-                            {material.StateMaterial.map((stateMaterial) => (
-                                <Tooltip key={stateMaterial.id}>
-                                    <TooltipTrigger>
-                                        <Badge
-                                            variant="secondary"
-                                            size={"sm"}
-                                            style={stateMaterial.color ? {
-                                                backgroundColor: stateMaterial.color,
-                                                color: getContrastColor(stateMaterial.color),
-                                            } : {}}
-                                        >
-                                            {stateMaterial.name}
-                                        </Badge>
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                        {stateMaterial.description}
-                                    </TooltipContent>
-                                </Tooltip>
-                            ))}
-                        </TooltipProvider>
+                        {material.StateMaterial.map((stateMaterial) => (
+                            <StateMaterialBadge key={stateMaterial.id} stateMaterial={stateMaterial} />
+                        ))}
                     </div>
                 </BasicCard>
 

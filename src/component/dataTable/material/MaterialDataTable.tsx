@@ -12,6 +12,9 @@ import { getAllMaterialWidthStateMaterialAction } from "@/action/material.action
 import { handleErrorAction } from "@/util/error.util"
 import { toast } from "sonner"
 import { RefreshCw } from "lucide-react"
+import { StateMaterialBadge } from "@/component/badge/StateMaterialBadge"
+import { StateMaterialSmall } from "@/type/stateMaterial.type"
+import { CharacteristicsPopover } from "@/component/popover/CharacteristicsPopover"
 
 type Props = {
     materialData: MaterialIncludeStateMaterial[]
@@ -126,7 +129,7 @@ export const MaterialDataTable = ({ materialData }: Props) => {
 }
 
 const formatMaterialArray = (materialData: MaterialIncludeStateMaterial[]): MaterialFormatted[] => {
-    return materialData.map((material, index) => {
+    return materialData.map((material) => {
         return {
             id: material.id,
             name: material.name,
@@ -174,5 +177,29 @@ const columnsMaterial: ColumnDef<MaterialFormatted>[] = [
     {
         accessorKey: "description",
         header: "Description",
+    },
+    {
+        accessorKey: "characteristics",
+        header: "Caractéristiques",
+        cell: ({ getValue }) => {
+            const characteristicArray: Characteristics = getValue() as Characteristics
+            return (
+                <CharacteristicsPopover characteristics={characteristicArray} />
+            )
+        },
+    },
+    {
+        accessorKey: "StateMaterial",
+        header: "Etats du matériel",
+        cell: ({ getValue }) => {
+            const stateMaterialArray: StateMaterialSmall[] = getValue() as StateMaterialSmall[]
+            return (
+                <div className="flex gap-1 flex-wrap">
+                    {stateMaterialArray.map((stateMaterial) => (
+                        <StateMaterialBadge key={stateMaterial.id} stateMaterial={stateMaterial} />
+                    ))}
+                </div>
+            )
+        },
     },
 ]
